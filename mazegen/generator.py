@@ -63,3 +63,4 @@ class MazeGenerator:
         width: int, height: int, x: int, y: int
     ) -> bool:
         return 0 <= x < width and 0 <= y < height
+
