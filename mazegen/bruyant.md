@@ -29,4 +29,12 @@
   - visual representation
   - organize so the generation logic can be reused
 
-
+Usage:
+- python3 a_maze_ing.py config.txt
+- handle:
+  - invalid configuration
+  - file not found
+  - bad syntax
+  - impossible maze parameters
+  - ...
+  - always provide a clear error message to the user.

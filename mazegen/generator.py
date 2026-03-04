@@ -64,3 +64,17 @@ class MazeGenerator:
     ) -> bool:
         return 0 <= x < width and 0 <= y < height
 
+    def generate(self):
+        curent = (0, 0)
+        visited = []
+        stack = []
+        visited.append(curent)
+        stack.append(curent)
+        while len(stack):
+            curent = stack.pop()
+            if has_unvisited_neighbours(curent, visited):
+                stack.append(curent)
+                unvisited = choose_unvisited(curent, visited)
+                remove_wall(curent, unvisited)
+                visited.append(unvisited)
+                stack.append(unvisited)
