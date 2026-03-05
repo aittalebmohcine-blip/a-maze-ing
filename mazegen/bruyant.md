@@ -38,3 +38,5 @@ Usage:
   - impossible maze parameters
   - ...
   - always provide a clear error message to the user.
+
+

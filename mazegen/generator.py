@@ -65,16 +65,52 @@ class MazeGenerator:
         return 0 <= x < width and 0 <= y < height
 
     def generate(self):
-        curent = (0, 0)
-        visited = []
-        stack = []
-        visited.append(curent)
+        curent = self.entry
+        visited: list[list[bool]] = [
+            [False for _ in range(self.width)]
+            for _ in range(self.height)
+        ]
+        stack: list[tuple[int, int]] = []
+        x, y = curent
+        visited[y][x] = True
         stack.append(curent)
         while len(stack):
             curent = stack.pop()
-            if has_unvisited_neighbours(curent, visited):
+            neighbors = self._get_unvisited_neighbors(*curent, visited)
+            if neighbors:
                 stack.append(curent)
-                unvisited = choose_unvisited(curent, visited)
-                remove_wall(curent, unvisited)
-                visited.append(unvisited)
-                stack.append(unvisited)
+                nx, ny = self._rng.choice(neighbors)
+                #unvisited_neighb = choose_unvisited(curent, visited)
+                _remove_wall(*curent, nx, ny)
+                #x, y = unvisited_neighb
+                visited[ny][nx] = True
+                stack.append((nx, ny))
+    def _get_unvisited_neighbors(
+        self,
+        x: int,
+        y: int,
+        visited: list[list[bool]]
+    ) -> list[tuple[int, int]]:
+        neighbors: list[tuple[int, int]] = []
+ 
+        if x + 1 < self.width and not visited[y][x + 1]:
+            neighbors.append((x + 1, y))
+
+        if x - 1 >= 0 and not visited[y][x - 1]:
+            neighbors.append((x - 1, y))
+
+        if y + 1 < self.height and not visited[y + 1][x]:
+            neighbors.append((x, y + 1))
+
+        if y - 1 >= 0 and not visited[y - 1][x]:
+            neighbors.append((x, y - 1))
+
+        return neighbors
+    def _remove_wall(
+        self,
+        x: int,
+        y: int,
+        nx: int,
+        ny: int
+    ) -> None:
+        pass
