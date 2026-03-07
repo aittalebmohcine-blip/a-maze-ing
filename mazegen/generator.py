@@ -1,6 +1,10 @@
 import random
 from typing import Tuple
 
+N = 1 << 0  # 0001
+E = 1 << 1  # 0010
+S = 1 << 2  # 0100
+W = 1 << 3  # 1000
 
 class MazeGenerator:
     def __init__(
@@ -64,13 +68,13 @@ class MazeGenerator:
     ) -> bool:
         return 0 <= x < width and 0 <= y < height
 
-    def generate(self):
-        curent = self.entry
+    def generate(self) -> None:
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
             for _ in range(self.height)
         ]
         stack: list[tuple[int, int]] = []
+        curent = self.entry
         x, y = curent
         visited[y][x] = True
         stack.append(curent)
@@ -80,9 +84,7 @@ class MazeGenerator:
             if neighbors:
                 stack.append(curent)
                 nx, ny = self._rng.choice(neighbors)
-                #unvisited_neighb = choose_unvisited(curent, visited)
-                _remove_wall(*curent, nx, ny)
-                #x, y = unvisited_neighb
+                self._remove_wall(*curent, nx, ny)
                 visited[ny][nx] = True
                 stack.append((nx, ny))
     def _get_unvisited_neighbors(
@@ -113,4 +115,19 @@ class MazeGenerator:
         nx: int,
         ny: int
     ) -> None:
-        pass
+ 
+        if nx == x and ny == y - 1:  # North
+            self.grid[y][x] &= ~N
+            self.grid[ny][nx] &= ~S
+
+        elif nx == x + 1 and ny == y:  # East
+            self.grid[y][x] &= ~E
+            self.grid[ny][nx] &= ~W
+
+        elif nx == x and ny == y + 1:  # South
+            self.grid[y][x] &= ~S
+            self.grid[ny][nx] &= ~N
+
+        elif nx == x - 1 and ny == y:  # West
+            self.grid[y][x] &= ~W
+            self.grid[ny][nx] &= ~E
