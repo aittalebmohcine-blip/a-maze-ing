@@ -153,12 +153,22 @@ class MazeGenerator:
                 break
 
             for n in self._get_unvisited_neighbors(*curent, visited):
-                x, y = n
-                if not visited[y][x]:
-                    visited[y][x] = True
-                    parent[n] = curent
-                    stack.append(n)
+                if _is_reachable(n, curent):
+                    x, y = n
+                    if not visited[y][x]:
+                        visited[y][x] = True
+                        parent[n] = curent
+                        stack.append(n)
         return self._build_path(entry, exit, parent)
+
+
+    def _is_reachable(
+        self,
+        neighbor: tuple[int, int],
+        cell: tuple[int, int]
+    ) -> bool:
+        pass
+
 
     def _build_path(
         self,
@@ -215,9 +225,11 @@ class MazeGenerator:
     ) -> None:
         h = len(maze)
         w = len(maze[0])
-        path_cells = set(path)
     
-        # top border
+        path_set = set(path)
+        start = path[0]
+        end = path[-1]
+    
         print("+" + "---+" * w)
     
         for y in range(h):
@@ -227,16 +239,16 @@ class MazeGenerator:
             for x in range(w):
                 cell = maze[y][x]
     
-                # draw cell content
-                if (x, y) in path_cells:
+                if (x, y) == start:
+                    line1 += " S "
+                elif (x, y) == end:
+                    line1 += " E "
+                elif (x, y) in path_set:
                     line1 += " . "
                 else:
                     line1 += "   "
     
-                # east wall (bit 1)
                 line1 += "|" if (cell & 2) else " "
-    
-                # south wall (bit 2)
                 line2 += "---+" if (cell & 4) else "   +"
     
             print(line1)
