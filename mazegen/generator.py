@@ -160,7 +160,7 @@ class MazeGenerator:
             if curent == exit:
                 break
 
-            for d, ny, nx in self._neighbors(*curent, visited):
+            for d, ny, nx in self._neighbors(self.grid, *curent):
                 if not visited[ny][nx]:
                     visited[ny][nx] = True
                     parent[(ny, nx)] = (curent, d)
@@ -171,8 +171,8 @@ class MazeGenerator:
     def _neighbors(
         self,
         maze: list[list[int]],
-        y: int,
-        x: int
+        x: int,
+        y: int
     ) -> tuple[str, int, int]:
         w = len(maze[0])
         h = len(maze)
@@ -201,50 +201,34 @@ class MazeGenerator:
 
         return "".join((reversed(path)))
 
-    def draw_maze(self, maze: list[list[int]]) -> None:
+
+
+
+
+    def draw_maze_with_path(self, maze: list[list[int]], path: str,
+                            entry: tuple[int, int]) -> None:
         h = len(maze)
         w = len(maze[0])
-
+    
+        # compute path cells
+        x, y = entry
+        path_cells = {(x, y)}
+    
+        moves = {
+            "N": (0, -1),
+            "E": (1, 0),
+            "S": (0, 1),
+            "W": (-1, 0),
+        }
+    
+        for step in path:
+            dx, dy = moves[step]
+            x += dx
+            y += dy
+            path_cells.add((x, y))
+    
         # top border
         print("+" + "---+" * w)
- 
-        for y in range(h):
-            line1 = "|"
-            line2 = "+"
-
-            for x in range(w):
-                cell = maze[y][x]
-
-                # inside of cell
-                line1 += "   "
-
-                # east wall (bit 1)
-                if cell & 2:
-                    line1 += "|"
-                else:
-                    line1 += " "
-
-                # south wall (bit 2)
-                if cell & 4:
-                    line2 += "---+"
-                else:
-                    line2 += "   +"
-
-            print(line1)
-            print(line2)
-    def draw_maze_with_path(
-        self,
-        maze: list[list[int]],
-        path: list[tuple[int, int]]
-    ) -> None:
-        h = len(maze)
-        w = len(maze[0])
-    
-        path_set = set(path)
-        start = path[0]
-        end = path[-1]
-    
-        print("+" + "---+" * w)
     
         for y in range(h):
             line1 = "|"
@@ -253,17 +237,23 @@ class MazeGenerator:
             for x in range(w):
                 cell = maze[y][x]
     
-                if (x, y) == start:
-                    line1 += " S "
-                elif (x, y) == end:
-                    line1 += " E "
-                elif (x, y) in path_set:
+                # draw path
+                if (x, y) in path_cells:
                     line1 += " . "
                 else:
                     line1 += "   "
     
-                line1 += "|" if (cell & 2) else " "
-                line2 += "---+" if (cell & 4) else "   +"
+                # east wall
+                if cell & 2:
+                    line1 += "|"
+                else:
+                    line1 += " "
+    
+                # south wall
+                if cell & 4:
+                    line2 += "---+"
+                else:
+                    line2 += "   +"
     
             print(line1)
             print(line2)
