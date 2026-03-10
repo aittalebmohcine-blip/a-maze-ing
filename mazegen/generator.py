@@ -6,6 +6,14 @@ E = 1 << 1  # 0010
 S = 1 << 2  # 0100
 W = 1 << 3  # 1000
 
+# format: direction : (dy, dx, wall_bit)
+DIRS = {
+    "N": (-1, 0, 1),
+    "E": (0, 1, 2),
+    "S": (1, 0, 4),
+    "W": (0, -1, 8),
+}
+
 class MazeGenerator:
     def __init__(
         self,
@@ -152,22 +160,29 @@ class MazeGenerator:
             if curent == exit:
                 break
 
-            for n in self._get_unvisited_neighbors(*curent, visited):
-                if _is_reachable(n, curent):
-                    x, y = n
-                    if not visited[y][x]:
-                        visited[y][x] = True
-                        parent[n] = curent
-                        stack.append(n)
+            for d, ny, nx in self._neighbors(*curent, visited):
+                if not visited[ny][nx]:
+                    visited[ny][nx] = True
+                    parent[(ny, nx)] = (curent, d)
+                    stack.append((ny, nx))
         return self._build_path(entry, exit, parent)
 
 
-    def _is_reachable(
+    def _neighbors(
         self,
-        neighbor: tuple[int, int],
-        cell: tuple[int, int]
-    ) -> bool:
-        pass
+        maze: list[list[int]],
+        y: int,
+        x: int
+    ) -> tuple[str, int, int]:
+        w = len(maze[0])
+        h = len(maze)
+        for d, (dy, dx, bit) in DIRS.items():
+            if not (maze[y][x] & bit): # wall open
+                ny = y + dy
+                nx = x + dx
+
+                if 0 <= ny < h and 0 <= nx < w:
+                    yield d, ny, nx
 
 
     def _build_path(
@@ -175,17 +190,16 @@ class MazeGenerator:
         entry: tuple[int, int],
         exit: tuple[int, int],
         parent: dict
-    ) -> list[tuple[int, int]]:
+    ) -> str:
         path = []
         curent = exit
 
         while curent != entry:
-            path.append(curent)
-            curent = parent[curent]
+            prev, d = parent[curent]
+            path.append(d)
+            curent = prev
 
-        path.append(entry)
-        path.reverse()
-        return path
+        return "".join((reversed(path)))
 
     def draw_maze(self, maze: list[list[int]]) -> None:
         h = len(maze)
