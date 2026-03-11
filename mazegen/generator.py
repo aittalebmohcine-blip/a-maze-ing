@@ -190,7 +190,6 @@ class MazeGenerator:
         exit: tuple[int, int],
         parent: dict
     ) -> str:
-        print(parent)
         path = []
         curent = exit
 
