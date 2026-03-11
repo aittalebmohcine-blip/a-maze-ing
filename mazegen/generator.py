@@ -8,10 +8,10 @@ W = 1 << 3  # 1000
 
 # format: direction : (dy, dx, wall_bit)
 DIRS = {
-    "N": (-1, 0, 1),
-    "E": (0, 1, 2),
-    "S": (1, 0, 4),
-    "W": (0, -1, 8),
+    "N": (0, -1, 1),
+    "E": (1, 0, 2),
+    "S": (0, 1, 4),
+    "W": (-1, 0, 8),
 }
 
 class MazeGenerator:
@@ -160,11 +160,11 @@ class MazeGenerator:
             if curent == exit:
                 break
 
-            for d, ny, nx in self._neighbors(self.grid, *curent):
+            for d, nx, ny in self._neighbors(self.grid, *curent):
                 if not visited[ny][nx]:
                     visited[ny][nx] = True
-                    parent[(ny, nx)] = (curent, d)
-                    stack.append((ny, nx))
+                    parent[(nx, ny)] = (curent, d)
+                    stack.append((nx, ny))
         return self._build_path(entry, exit, parent)
 
 
@@ -176,12 +176,12 @@ class MazeGenerator:
     ) -> tuple[str, int, int]:
         w = len(maze[0])
         h = len(maze)
-        for d, (dy, dx, bit) in DIRS.items():
+        for d, (dx, dy, bit) in DIRS.items():
             if not (maze[y][x] & bit): # wall open
                 ny = y + dy
                 nx = x + dx
                 if 0 <= ny < h and 0 <= nx < w:
-                    yield d, ny, nx
+                    yield d, nx, ny
 
 
     def _build_path(
@@ -190,6 +190,7 @@ class MazeGenerator:
         exit: tuple[int, int],
         parent: dict
     ) -> str:
+        print(parent)
         path = []
         curent = exit
 
