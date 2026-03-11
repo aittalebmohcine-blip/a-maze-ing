@@ -40,8 +40,8 @@ class MazeGenerator:
             raise TypeError("[ERROR]: entry and exit coordinates must be integers.")
 
         # ---- Logical validation ----
-        if width < 8 or height < 6:
-            raise ValueError("[ERROR]: Maze dimensions too small.")
+        #if width < 8 or height < 6:
+        #    raise ValueError("[ERROR]: Maze dimensions too small.")
 
         if entry == exit:
             raise ValueError(
@@ -180,7 +180,6 @@ class MazeGenerator:
             if not (maze[y][x] & bit): # wall open
                 ny = y + dy
                 nx = x + dx
-
                 if 0 <= ny < h and 0 <= nx < w:
                     yield d, ny, nx
 

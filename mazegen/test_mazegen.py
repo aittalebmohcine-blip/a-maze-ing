@@ -1,6 +1,6 @@
 from generator import MazeGenerator
 
-maze = MazeGenerator(8, 8, (0, 0), (5, 4))
+maze = MazeGenerator(3, 3, (0, 0), (2, 2))
 maze.generate()
 
 path = maze.bfs_solver(maze.grid, maze.entry, maze.exit)
