@@ -14,6 +14,7 @@ DIRS = {
     "W": (-1, 0, 8),
 }
 
+
 class MazeGenerator:
     def __init__(
         self,
@@ -37,11 +38,12 @@ class MazeGenerator:
             raise TypeError("[ERROR]: entry and exit must be tuples (x, y).")
 
         if not all(isinstance(v, int) for v in (*entry, *exit)):
-            raise TypeError("[ERROR]: entry and exit coordinates must be integers.")
+            raise TypeError(
+                "[ERROR]: entry and exit coordinates must be integers.")
 
         # ---- Logical validation ----
-        #if width < 8 or height < 6:
-        #    raise ValueError("[ERROR]: Maze dimensions too small.")
+        if width < 8 or height < 6:
+            raise ValueError("[ERROR]: Maze dimensions too small.")
 
         if entry == exit:
             raise ValueError(
@@ -95,27 +97,31 @@ class MazeGenerator:
                 self._remove_wall(*curent, nx, ny)
                 visited[ny][nx] = True
                 stack.append((nx, ny))
+
+    @staticmethod
     def _get_unvisited_neighbors(
-        self,
         x: int,
         y: int,
         visited: list[list[bool]]
     ) -> list[tuple[int, int]]:
+        width = len(visited[0])
+        height = len(visited)
         neighbors: list[tuple[int, int]] = []
- 
-        if x + 1 < self.width and not visited[y][x + 1]:
+
+        if x + 1 < width and not visited[y][x + 1]:
             neighbors.append((x + 1, y))
 
         if x - 1 >= 0 and not visited[y][x - 1]:
             neighbors.append((x - 1, y))
 
-        if y + 1 < self.height and not visited[y + 1][x]:
+        if y + 1 < height and not visited[y + 1][x]:
             neighbors.append((x, y + 1))
 
         if y - 1 >= 0 and not visited[y - 1][x]:
             neighbors.append((x, y - 1))
 
         return neighbors
+
     def _remove_wall(
         self,
         x: int,
@@ -123,7 +129,7 @@ class MazeGenerator:
         nx: int,
         ny: int
     ) -> None:
- 
+
         if nx == x and ny == y - 1:  # North
             self.grid[y][x] &= ~N
             self.grid[ny][nx] &= ~S
@@ -154,7 +160,7 @@ class MazeGenerator:
         ]
         x, y = entry
         visited[y][x] = True
-        while(stack):
+        while stack:
             curent = stack.pop()
 
             if curent == exit:
@@ -167,9 +173,8 @@ class MazeGenerator:
                     stack.append((nx, ny))
         return self._build_path(entry, exit, parent)
 
-
+    @staticmethod
     def _neighbors(
-        self,
         maze: list[list[int]],
         x: int,
         y: int
@@ -177,15 +182,14 @@ class MazeGenerator:
         w = len(maze[0])
         h = len(maze)
         for d, (dx, dy, bit) in DIRS.items():
-            if not (maze[y][x] & bit): # wall open
+            if not (maze[y][x] & bit):  # wall open
                 ny = y + dy
                 nx = x + dx
                 if 0 <= ny < h and 0 <= nx < w:
                     yield d, nx, ny
 
-
+    @staticmethod
     def _build_path(
-        self,
         entry: tuple[int, int],
         exit: tuple[int, int],
         parent: dict
@@ -200,59 +204,55 @@ class MazeGenerator:
 
         return "".join((reversed(path)))
 
-
-
-
-
     def draw_maze_with_path(self, maze: list[list[int]], path: str,
                             entry: tuple[int, int]) -> None:
         h = len(maze)
         w = len(maze[0])
-    
+
         # compute path cells
         x, y = entry
         path_cells = {(x, y)}
-    
+
         moves = {
             "N": (0, -1),
             "E": (1, 0),
             "S": (0, 1),
             "W": (-1, 0),
         }
-    
+
         for step in path:
             dx, dy = moves[step]
             x += dx
             y += dy
             path_cells.add((x, y))
-    
+
         # top border
         print("+" + "---+" * w)
-    
+
         for y in range(h):
             line1 = "|"
             line2 = "+"
-    
+
             for x in range(w):
                 cell = maze[y][x]
-    
+
                 # draw path
                 if (x, y) in path_cells:
                     line1 += " . "
                 else:
                     line1 += "   "
-    
+
                 # east wall
                 if cell & 2:
                     line1 += "|"
                 else:
                     line1 += " "
-    
+
                 # south wall
                 if cell & 4:
                     line2 += "---+"
                 else:
                     line2 += "   +"
-    
+
             print(line1)
             print(line2)
