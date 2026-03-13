@@ -146,24 +146,19 @@ class MazeGenerator:
             self.grid[y][x] &= ~W
             self.grid[ny][nx] &= ~E
 
-    def bfs_solver(
-        self,
-        maze: list[list[int]],
-        entry: Tuple[int, int],
-        exit: Tuple[int, int]
-    ) -> list[tuple[int, int]]:
-        stack = [entry]
+    def bfs_solver(self) -> list[tuple[int, int]]:
+        stack = [self.entry]
         parent = {}
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
             for _ in range(self.height)
         ]
-        x, y = entry
+        x, y = self.entry
         visited[y][x] = True
         while stack:
             curent = stack.pop()
 
-            if curent == exit:
+            if curent == self.exit:
                 break
 
             for d, nx, ny in self._neighbors(self.grid, *curent):
@@ -171,7 +166,7 @@ class MazeGenerator:
                     visited[ny][nx] = True
                     parent[(nx, ny)] = (curent, d)
                     stack.append((nx, ny))
-        return self._build_path(entry, exit, parent)
+        return self._build_path(self.entry, self.exit, parent)
 
     @staticmethod
     def _neighbors(
@@ -204,13 +199,12 @@ class MazeGenerator:
 
         return "".join((reversed(path)))
 
-    def draw_maze_with_path(self, maze: list[list[int]], path: str,
-                            entry: tuple[int, int]) -> None:
-        h = len(maze)
-        w = len(maze[0])
+    def draw_maze_with_path(self, path: str) -> None:
+        h = len(self.grid)
+        w = len(self.grid[0])
 
         # compute path cells
-        x, y = entry
+        x, y = self.entry
         path_cells = {(x, y)}
 
         moves = {
@@ -234,7 +228,7 @@ class MazeGenerator:
             line2 = "+"
 
             for x in range(w):
-                cell = maze[y][x]
+                cell = self.grid[y][x]
 
                 # draw path
                 if (x, y) in path_cells:
