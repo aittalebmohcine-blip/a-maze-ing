@@ -127,4 +127,12 @@ class AsciiRenderer:
         # Bottom border
         output += BLOCK + (h_seg + BLOCK) * (width - 1) + h_seg + BLOCK + "\n"
 
+        # visualize the optiobs buttom line
+        output += "\n=== A-Maze-ing ===\n"
+        output += "1. Re-generate a new maze\n"
+        output += "2. Show/Hide path\n"
+        output += "3. Rotate maze colors\n"
+        output += "4. Quit\n"
+        output += "Choice? (1-4):\n"
+
         return output
