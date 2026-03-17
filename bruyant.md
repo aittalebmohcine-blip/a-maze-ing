@@ -22,6 +22,14 @@ a-maze-ing/
 
 --------
 
+git commit naming:
+- feat: new feature
+- fix: bug fix
+- refactor: improve code
+- docs: README
+
+---
+
 # Tasks
 
 - [ ] unperfect maze.
@@ -42,11 +50,11 @@ a-maze-ing/
 
 ### 1. Project Setup
 
-* [ ] Create Git repository.
-* [ ] Create project structure.
-* [ ] Create `.gitignore` for Python artifacts.
+* [x] Create Git repository.
+* [x] Create project structure.
+* [x] Create `.gitignore` for Python artifacts.
 * [ ] Setup virtual environment (recommended). 
-* [ ] Add `requirements.txt` if dependencies are used.
+* [x] Add `requirements.txt` if dependencies are used.
 
 ---
 
