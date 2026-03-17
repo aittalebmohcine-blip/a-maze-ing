@@ -83,11 +83,14 @@ def main() -> None:
             if key == "d":
                 i = (i + 1) % len(colors)
                 os.system('clear')
-            if key == "g":
+            elif key == "g":
+                os.system('clear')
                 maze.generate()
             elif key == "q":
                 os.system('clear')
                 break
+            else:
+                os.system('clear')
 
 
 if __name__ == "__main__":
