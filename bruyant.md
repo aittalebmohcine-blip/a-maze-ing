@@ -191,20 +191,20 @@ Subtasks:
 
 # 8. Output File Writer
 
-* [ ] Write maze to output file.
+* [x] Write maze to output file.
 
 Subtasks:
 
-* [ ] Encode each cell as **hexadecimal wall value**. 
-* [ ] Write rows line by line.
-* [ ] Add newline after each row.
+* [x] Encode each cell as **hexadecimal wall value**. 
+* [x] Write rows line by line.
+* [x] Add newline after each row.
 
 After maze:
 
-* [ ] Add empty line.
-* [ ] Write entry coordinates.
-* [ ] Write exit coordinates.
-* [ ] Write shortest path.
+* [x] Add empty line.
+* [x] Write entry coordinates.
+* [x] Write exit coordinates.
+* [x] Write shortest path.
 
 ---
 
@@ -214,14 +214,14 @@ After maze:
 
 ### Visual features
 
-* [ ] Show maze walls.
-* [ ] Show entry.
-* [ ] Show exit.
-* [ ] Show solution path.
+* [x] Show maze walls.
+* [x] Show entry.
+* [x] Show exit.
+* [x] Show solution path.
 
 ### User interactions
 
-* [ ] Regenerate maze.
+* [x] Regenerate maze.
 * [ ] Toggle shortest path display.
 * [ ] Change wall colors.
 * [ ] (Optional) color the “42” pattern.
