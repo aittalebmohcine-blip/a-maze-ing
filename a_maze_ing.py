@@ -53,10 +53,12 @@ def main() -> None:
     # display maze:
 
     # - Initialize terminal
+    os.system('clear')
     term = blessed.Terminal()
 
     renderer = drawer.AsciiRenderer(maze, start, end)
-    os.system('clear')
+
+    # print(blessed.Terminal().blue(drawer.AsciiRenderer().render()))
 
     # print the intro logo
     with open("bonus/intrro.txt", "r") as file:
@@ -72,17 +74,20 @@ def main() -> None:
         term.green,
         term.brown,
     ]
+
     i = 0
     with term.cbreak():
         while True:
-            print(colors[i](renderer.render(path=path)))
+            print(colors[i](renderer.render()))
             key = term.inkey()
-            if key == "q":
-                os.system('clear')
-                break
-            elif key == "d":
+            if key == "d":
                 i = (i + 1) % len(colors)
                 os.system('clear')
+            if key == "g":
+                maze.generate()
+            elif key == "q":
+                os.system('clear')
+                break
 
 
 if __name__ == "__main__":
