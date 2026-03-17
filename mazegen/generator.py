@@ -79,6 +79,12 @@ class MazeGenerator:
         return 0 <= x < width and 0 <= y < height
 
     def generate(self) -> None:
+        # reset the grid in case of regenaration
+        self.grid = [
+            [0b1111 for _ in range(self.width)]
+            for _ in range(self.height)
+        ]
+
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
             for _ in range(self.height)
