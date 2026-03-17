@@ -100,6 +100,33 @@ class MazeGenerator:
                 self._remove_wall(*curent, nx, ny)
                 visited[ny][nx] = True
                 stack.append((nx, ny))
+        if not self.perfect:
+            self._make_imperfect()
+
+    def _make_imperfect(self):
+        proba = 0.15
+        visited: list[list[bool]] = [
+            [False for _ in range(self.width)]
+            for _ in range(self.height)
+        ]
+        for cell in self.cells_of_42(self.width, self.height):
+            x, y = cell
+            visited[y][x] = True
+        stack: list[tuple[int, int]] = []
+        curent = self.entry
+        x, y = curent
+        visited[y][x] = True
+        stack.append(curent)
+        while len(stack):
+            curent = stack.pop()
+            neighbors = self._get_unvisited_neighbors(*curent, visited)
+            if neighbors:
+                stack.append(curent)
+                nx, ny = self._rng.choice(neighbors)
+                if self._rng.random() < proba:
+                    self._remove_wall(*curent, nx, ny)
+                visited[ny][nx] = True
+                stack.append((nx, ny))
 
     @staticmethod
     def cells_of_42(wd: int, ht: int) -> List[Tuple[int, int]]:
