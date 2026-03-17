@@ -62,11 +62,12 @@ class AsciiRenderer:
             "W": (-1, 0),
         }
 
-        for step in path:
-            dx, dy = moves[step]
-            x += dx
-            y += dy
-            path_cells.add((x, y))
+        if path is not None:
+            for step in path:
+                dx, dy = moves[step]
+                x += dx
+                y += dy
+                path_cells.add((x, y))
 
         output = ""
 
