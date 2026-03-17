@@ -1,0 +1,10 @@
+# Mandatory keys
+WIDTH=9
+HEIGHT=6
+ENTRY=0,0
+EXIT=0,1
+OUTPUT_FILE=output.txt
+PERFECT=true
+
+# Optional
+#SEED=0
