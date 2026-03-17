@@ -63,17 +63,17 @@ git commit naming:
 ### `a_maze_ing.py`
 
 * [ ] Implement CLI entry point.
-* [ ] Accept exactly **one argument: config file**. 
+* [x] Accept exactly **one argument: config file**. 
 * [ ] Handle missing/extra arguments.
 * [ ] Handle all runtime errors gracefully.
 
 Subtasks:
 
-* [ ] Load configuration.
-* [ ] Generate maze.
-* [ ] Solve maze.
-* [ ] Write output file.
-* [ ] Launch visual representation.
+* [x] Load configuration.
+* [x] Generate maze.
+* [x] Solve maze.
+* [x] Write output file.
+* [x] Launch visual representation.
 
 ---
 
@@ -81,40 +81,40 @@ Subtasks:
 
 ### Config parser
 
-* [ ] Read config file.
-* [ ] Ignore comments (`#`). 
-* [ ] Parse `KEY=VALUE` pairs.
-* [ ] Validate syntax.
-* [ ] Handle invalid lines.
+* [x] Read config file.
+* [x] Ignore comments (`#`). 
+* [x] Parse `KEY=VALUE` pairs.
+* [x] Validate syntax.
+* [x] Handle invalid lines.
 
 ### Required keys
 
-* [ ] `WIDTH`
-* [ ] `HEIGHT`
-* [ ] `ENTRY`
-* [ ] `EXIT`
-* [ ] `OUTPUT_FILE`
-* [ ] `PERFECT` 
+* [x] `WIDTH`
+* [x] `HEIGHT`
+* [x] `ENTRY`
+* [x] `EXIT`
+* [x] `OUTPUT_FILE`
+* [x] `PERFECT` 
 
 ### Optional keys
 
-* [ ] `SEED`
+* [x] `SEED`
 * [ ] `ALGORITHM`
 * [ ] `DISPLAY_MODE`
 * [ ] Other custom options.
 
 ### Validation
 
-* [ ] Width/height > 0.
-* [ ] Entry inside bounds.
-* [ ] Exit inside bounds.
-* [ ] Entry ≠ Exit.
-* [ ] Output file valid.
-* [ ] Perfect flag boolean.
+* [x] Width/height > 0.
+* [x] Entry inside bounds.
+* [x] Exit inside bounds.
+* [x] Entry ≠ Exit.
+* [x] Output file valid.
+* [x] Perfect flag boolean.
 
 ### Repository requirement
 
-* [ ] Provide **default config file**. 
+* [x] Provide **default config file**. 
 
 ---
 
@@ -136,15 +136,15 @@ Subtasks:
 
 # 5. Maze Generation
 
-* [ ] Implement random maze generation. 
-* [ ] Support reproducibility using seed.
+* [x] Implement random maze generation. 
+* [x] Support reproducibility using seed.
 
 Subtasks:
 
 * [ ] Initialize RNG with seed.
-* [ ] Generate full maze structure.
-* [ ] Ensure connectivity.
-* [ ] Ensure no isolated cells.
+* [x] Generate full maze structure.
+* [x] Ensure connectivity.
+* [x] Ensure no isolated cells.
 
 ### PERFECT mode
 
@@ -154,8 +154,8 @@ Subtasks:
 
 ### Structural constraints
 
-* [ ] Maze borders must have walls.
-* [ ] Prevent inconsistent walls between neighbours.
+* [x] Maze borders must have walls.
+* [x] Prevent inconsistent walls between neighbours.
 * [ ] Prevent **3×3 open areas**.
 * [ ] Corridors max width = 2.
 
@@ -163,12 +163,12 @@ Subtasks:
 
 # 6. “42” Pattern
 
-* [ ] Embed visible **“42” pattern** using closed cells. 
-* [ ] Validate maze size allows it.
+* [x] Embed visible **“42” pattern** using closed cells. 
+* [x] Validate maze size allows it.
 
 Subtasks:
 
-* [ ] Detect if maze too small.
+* [x] Detect if maze too small.
 * [ ] If too small:
 
   * [ ] Print error message.
