@@ -178,14 +178,14 @@ Subtasks:
 
 # 7. Maze Solver
 
-* [ ] Implement shortest path solver.
+* [x] Implement shortest path solver.
 
 Subtasks:
 
-* [ ] Use BFS or equivalent.
-* [ ] Compute path from entry → exit.
-* [ ] Convert path to `N,E,S,W` directions.
-* [ ] Store path.
+* [x] Use BFS or equivalent.
+* [x] Compute path from entry → exit.
+* [x] Convert path to `N,E,S,W` directions.
+* [x] Store path.
 
 ---
 
