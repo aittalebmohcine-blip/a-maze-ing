@@ -76,18 +76,32 @@ def main() -> None:
     ]
 
     i = 0
+    path = None
+    just_pressed = 0
     with term.cbreak():
         while True:
-            print(colors[i](renderer.render()))
+            if path is None:
+                print(colors[i](renderer.render()))
+            else:
+                print(colors[i](renderer.render(path=path)))
             key = term.inkey()
-            if key == "d":
+            if key == "3":
                 i = (i + 1) % len(colors)
-                os.system('clear')
-            if key == "g":
+            elif key == "1":
+                path = None
                 maze.generate()
-            elif key == "q":
+                just_pressed = 0
+            elif key == '2':
+                if not just_pressed:
+                    path = maze.bfs_solver()
+                    just_pressed = 1
+                else:
+                    path = None
+                    just_pressed = 0
+            elif key == "4":
                 os.system('clear')
                 break
+            os.system('clear')
 
 
 if __name__ == "__main__":
