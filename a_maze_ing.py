@@ -58,28 +58,30 @@ def main() -> None:
     renderer = drawer.AsciiRenderer(maze, start, end)
     os.system('clear')
 
-    filename = open("bonus/intrro.txt", "r")
-    col = [
+    # print the intro logo
+    with open("bonus/intrro.txt", "r") as file:
+        for line in file:
+            print(term.red(line.strip()))
+            time.sleep(0.1)
+        os.system('clear')
+
+    colors = [
         term.blue,
         term.red,
         term.white,
         term.green,
-        term.brown
+        term.brown,
     ]
     i = 0
-    for line in filename:
-        print(term.red(line.strip()))
-        time.sleep(0.1)
-    os.system('clear')
     with term.cbreak():
         while True:
-            print(col[i](renderer.render(path=path)))
+            print(colors[i](renderer.render(path=path)))
             key = term.inkey()
             if key == "q":
                 os.system('clear')
                 break
             elif key == "d":
-                i = (i + 1) % len(col)
+                i = (i + 1) % len(colors)
                 os.system('clear')
 
 
