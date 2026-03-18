@@ -84,6 +84,13 @@ def main() -> None:
                 print(colors[i](renderer.render()))
             else:
                 print(colors[i](renderer.render(path=path)))
+            print(term.white(
+                "\n=== A-Maze-ing ===\n",
+                "1. Re-generate a new maze\n",
+                "2. Show/Hide path\n",
+                "3. Rotate maze colors\n",
+                "4. Quit\n",
+                "Choice? (1-4):"))
             key = term.inkey()
             if key == "3":
                 i = (i + 1) % len(colors)
