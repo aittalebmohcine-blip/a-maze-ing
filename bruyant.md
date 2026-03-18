@@ -222,8 +222,8 @@ After maze:
 ### User interactions
 
 * [x] Regenerate maze.
-* [ ] Toggle shortest path display.
-* [ ] Change wall colors.
+* [x] Toggle shortest path display.
+* [x] Change wall colors.
 * [ ] (Optional) color the “42” pattern.
 
 ---
@@ -234,9 +234,9 @@ Create reusable module.
 
 Subtasks:
 
-* [ ] Implement `MazeGenerator` class. 
-* [ ] Provide maze generation API.
-* [ ] Provide solution access.
+* [x] Implement `MazeGenerator` class. 
+* [x] Provide maze generation API.
+* [x] Provide solution access.
 * [ ] Expose maze structure.
 
 ### Packaging
