@@ -6,13 +6,16 @@ from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class MazeConfig(BaseModel):
-    WIDTH: int = Field(..., ge=9, description="Maze width (>=5)")
-    HEIGHT: int = Field(..., ge=6, description="Maze height (>=6)")
+    # required keys
+    WIDTH: int = Field(..., ge=9, le=100)
+    HEIGHT: int = Field(..., ge=6, le=100)
     ENTRY: Tuple[int, int] = Field(...)
     EXIT: Tuple[int, int] = Field(...)
     PERFECT: bool = Field(...)
-    SEED: int = Field(default=None)
     OUTPUT_FILE: str = Field(...)
+
+    # Optional
+    SEED: Optional[int] = None
 
     @model_validator(mode="after")
     def validate_entry(self):
