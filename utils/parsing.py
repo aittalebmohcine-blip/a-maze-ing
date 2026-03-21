@@ -66,8 +66,8 @@ def parsing_config_file(filepath: str) -> Optional[MazeConfig]:
 
                 elif key in {"ENTRY", "EXIT"}:
                     # x, y = map(int, value.split(","))
-                    x, y = value.split(",")
-                    config[key] = (x, y)
+                    # x, y = value.split(",")
+                    config[key] = tuple(value.split(","))
 
                 elif key == "PERFECT":
                     if value.lower() not in {"true", "false"}:
