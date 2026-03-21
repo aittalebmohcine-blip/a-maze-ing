@@ -18,7 +18,7 @@ class MazeConfig(BaseModel):
     SEED: Optional[int] = None
 
     @model_validator(mode="after")
-    def validate_entry(self):
+    def validate_entry_exit(self):
         x, y = self.ENTRY
         w = self.WIDTH
         h = self.HEIGHT
@@ -61,10 +61,12 @@ def parsing_config_file(filepath: str) -> Optional[MazeConfig]:
                 if key in config:
                     raise ValueError(f"A key must be entred only once ({key})")
                 if key in {"WIDTH", "HEIGHT"}:
-                    config[key] = int(value)
+                    # config[key] = int(value)
+                    config[key] = value
 
                 elif key in {"ENTRY", "EXIT"}:
-                    x, y = map(int, value.split(","))
+                    # x, y = map(int, value.split(","))
+                    x, y = value.split(",")
                     config[key] = (x, y)
 
                 elif key == "PERFECT":
@@ -76,7 +78,7 @@ def parsing_config_file(filepath: str) -> Optional[MazeConfig]:
                     config[key] = value
 
                 elif key == "SEED":
-                    config[key] = int(value)
+                    config[key] = value
 
                 else:
                     raise ValueError(f"Unknown key: {key}")
@@ -91,6 +93,10 @@ def parsing_config_file(filepath: str) -> Optional[MazeConfig]:
         print("Permission denied while reading config file")
         exit(1)
 
-    except (ValueError, ValidationError) as e:
+    except ValidationError as e:
+        for error in e.errors():
+            print(f"{error['msg']}: {error['loc'][0]}")
+        exit(1)
+    except ValueError as e:
         print(f"Configuration error:\n{e}")
         exit(1)
