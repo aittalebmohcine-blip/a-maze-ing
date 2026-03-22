@@ -42,13 +42,17 @@ def main() -> None:
     path = maze.bfs_solver()
 
     # write output file
-    file_writer.file_writer(
-        maze.grid,
-        start,
-        end,
-        path,
-        output_file,
-    )
+    try:
+        file_writer.file_writer(
+            maze.grid,
+            start,
+            end,
+            path,
+            output_file,
+        )
+    except Exception as e:
+        print(e)
+        exit(1)
 
     # display maze:
 

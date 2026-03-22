@@ -13,20 +13,26 @@ def file_writer(
         path: str,
         output_file_path: str,
 ) -> None:
-    with open(output_file_path, 'w') as file:
-        for line in maze:
-            for num in line:
-                file.write(f"{hex(num)[2:]}")
+    try:
+        with open(output_file_path, 'w') as file:
+            # maze
+            for line in maze:
+                for num in line:
+                    file.write(f"{hex(num)[2:].upper()}")
+                file.write('\n')
+
+            # empty line
             file.write('\n')
 
-        file.write('\n')
+            # entry / exit
+            file.write(f"{start[0]},{start[1]}\n")
+            file.write(f"{end[0]},{end[1]}\n")
 
-        x, y = start
-        file.write(f"{x},{y}\n")
-        x, y = end
-        file.write(f"{x},{y}\n")
+            # path
+            file.write(f"{path}\n")
 
-        file.write(path)
+    except (FileNotFoundError, PermissionError, IsADirectoryError) as e:
+        raise Exception(f"File error: {e}")
 
 
 # file_writer([[1, 2, 3], [4, 5, 6]], (0, 0), (1, 1), "SEWN", "output_file")
