@@ -65,11 +65,15 @@ def main() -> None:
     # print(blessed.Terminal().blue(drawer.AsciiRenderer().render()))
 
     # print the intro logo
-    with open("bonus/intrro.txt", "r") as file:
-        for line in file:
-            print(term.red(line.strip()))
-            time.sleep(0.1)
-        os.system('clear')
+    try:
+        with open("bonus/intrro.txt", "r") as file:
+            for line in file:
+                print(term.red(line.strip()))
+                time.sleep(0.1)
+            os.system('clear')
+    except Exception as e:
+        print(f"File error: {e}")
+        exit(1)
 
     colors = [
         term.blue,
