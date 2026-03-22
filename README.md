@@ -2,6 +2,7 @@
 to do:
 - [ ] error handling
   - [ ] a_maze_ing.py
+  - [ ] import errors.
 - [ ] readme
 - [ ] Makefile
 - [ ] type hints
