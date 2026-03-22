@@ -82,7 +82,7 @@ def main() -> None:
         term.green,
         term.brown,
     ]
-
+# still need error handling from this line if applicable
     i = 0
     path = None
     just_pressed = 0
