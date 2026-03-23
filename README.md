@@ -6,7 +6,7 @@ to do:
 - parsing
   - [x] fix: better error msg for missing keys.
   - [x] fix: invalid value error msg.
-- [ ] readme
-- [ ] Makefile
+- [x] Makefile
 - [ ] type hints
 - [ ] doc strings
+- [ ] readme
