@@ -18,7 +18,7 @@ class MazeConfig(BaseModel):
     SEED: Optional[int] = None
 
     @model_validator(mode="after")
-    def validate_entry_exit(self):
+    def validate_entry_exit(self) -> "MazeConfig":
         x, y = self.ENTRY
         w = self.WIDTH
         h = self.HEIGHT

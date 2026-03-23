@@ -7,6 +7,7 @@ to do:
   - [x] fix: better error msg for missing keys.
   - [x] fix: invalid value error msg.
 - [x] Makefile
+- [ ] mypy
 - [ ] type hints
 - [ ] doc strings
 - [ ] readme
