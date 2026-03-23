@@ -1,5 +1,5 @@
 import random
-from typing import Tuple, List
+from typing import Tuple, List, Generator, Dict
 
 N = 1 << 0  # 0001
 E = 1 << 1  # 0010
@@ -109,7 +109,7 @@ class MazeGenerator:
         if not self.perfect:
             self._make_imperfect()
 
-    def _make_imperfect(self):
+    def _make_imperfect(self) -> None:
         proba = 0.15
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
@@ -200,7 +200,7 @@ class MazeGenerator:
             self.grid[y][x] &= ~W
             self.grid[ny][nx] &= ~E
 
-    def bfs_solver(self) -> list[tuple[int, int]]:
+    def bfs_solver(self) -> str:
         stack = [self.entry]
         parent = {}
         visited: list[list[bool]] = [
@@ -227,7 +227,7 @@ class MazeGenerator:
         maze: list[list[int]],
         x: int,
         y: int
-    ) -> tuple[str, int, int]:
+    ) -> Generator[tuple[str, int, int], None, None]:
         w = len(maze[0])
         h = len(maze)
         for d, (dx, dy, bit) in DIRS.items():
@@ -241,7 +241,7 @@ class MazeGenerator:
     def _build_path(
         entry: tuple[int, int],
         exit: tuple[int, int],
-        parent: dict
+        parent: Dict[tuple[int, int], tuple[tuple[int, int], str]]
     ) -> str:
         path = []
         curent = exit
