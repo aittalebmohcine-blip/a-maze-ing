@@ -4,16 +4,19 @@
 # write output file
 # display maze
 
-import blessed
-
 import os
 import time
 import sys
 
-import utils.parsing as parser
-import mazegen.generator as generator
-from utils import file_writer
-import utils.drawing as drawer
+try:
+    import blessed
+    import utils.parsing as parser
+    import mazegen.generator as generator
+    from utils import file_writer
+    import utils.drawing as drawer
+except ImportError as e:
+    print(f"Import error: {e}")
+    exit(1)
 
 
 def main() -> None:
@@ -82,7 +85,7 @@ def main() -> None:
         term.green,
         term.brown,
     ]
-# still need error handling from this line if applicable
+
     i = 0
     path = None
     just_pressed = 0

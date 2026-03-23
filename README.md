@@ -1,11 +1,12 @@
 # a-maze-ing
 to do:
-- [ ] error handling
-  - [ ] a_maze_ing.py
-  - [ ] import errors.
-- [ ] readme
-- [ ] Makefile
-- [ ] type hints
+- error handling
+  - [x] a_maze_ing.py
+  - [x] import errors.
 - parsing
   - [x] fix: better error msg for missing keys.
   - [x] fix: invalid value error msg.
+- [ ] readme
+- [ ] Makefile
+- [ ] type hints
+- [ ] doc strings
