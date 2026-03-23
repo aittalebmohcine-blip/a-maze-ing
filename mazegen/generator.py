@@ -1,5 +1,5 @@
 import random
-from typing import Tuple, List, Generator, Dict
+from typing import Tuple, List, Generator, Dict, Optional
 
 N = 1 << 0  # 0001
 E = 1 << 1  # 0010
@@ -200,7 +200,7 @@ class MazeGenerator:
             self.grid[y][x] &= ~W
             self.grid[ny][nx] &= ~E
 
-    def bfs_solver(self) -> str:
+    def bfs_solver(self) -> Optional[str]:
         stack = [self.entry]
         parent = {}
         visited: list[list[bool]] = [

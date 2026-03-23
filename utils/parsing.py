@@ -41,7 +41,7 @@ class MazeConfig(BaseModel):
         return self
 
 
-def parsing_config_file(filepath: str) -> Optional[MazeConfig]:
+def parsing_config_file(filepath: str) -> MazeConfig:
     config: dict = {}
 
     try:

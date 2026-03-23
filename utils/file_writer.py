@@ -3,14 +3,14 @@
 # entry
 # exit
 # path
-from typing import List, Tuple
+from typing import List, Tuple, Optional
 
 
 def file_writer(
         maze: List[List[int]],
         start: Tuple[int, int],
         end: Tuple[int, int],
-        path: str,
+        path: Optional[str],
         output_file_path: str,
 ) -> None:
     try:
