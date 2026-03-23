@@ -45,10 +45,10 @@ class AsciiRenderer:
 
     def render(
         self,
-        player_pos: Optional[Tuple[int, int]] = None,
-        visited_trail: Optional[List] = None,
         path: Optional[str] = None,
-        show: bool = True
+        # player_pos: Optional[Tuple[int, int]] = None,
+        # visited_trail: Optional[List] = None,
+        # show: bool = True
     ) -> str:
 
         BLOCK = "█"
