@@ -1,7 +1,7 @@
 # parsing_config_file(file) -> Config
 
 from utils.drawing import AsciiRenderer
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict, Any
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
@@ -42,7 +42,7 @@ class MazeConfig(BaseModel):
 
 
 def parsing_config_file(filepath: str) -> MazeConfig:
-    config: dict = {}
+    config: Dict[Any, Any] = {}
 
     try:
         with open(filepath, "r") as file:
