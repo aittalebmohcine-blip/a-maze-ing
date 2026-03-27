@@ -11,7 +11,7 @@ import sys
 try:
     import blessed
     import utils.parsing as parser
-    import mazegen.generator as generator
+    from mazegen import generator
     from utils import file_writer
     import utils.drawing as drawer
 except ImportError as e:

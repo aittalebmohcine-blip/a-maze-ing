@@ -1,5 +1,6 @@
 # drawing.py
 from typing import Tuple, Optional, List
+from mazegen.generator import MazeGenerator
 
 # Direction bitmasks (matching generator.py)
 N = 1
@@ -14,7 +15,12 @@ class AsciiRenderer:
     keeping the 42-block cells fully blocked.
     """
 
-    def __init__(self, maze, entry: Tuple[int, int], exit: Tuple[int, int]):
+    def __init__(
+        self,
+        maze: MazeGenerator,
+        entry: Tuple[int, int],
+        exit: Tuple[int, int]
+    ):
         self.maze = maze
         self.entry = entry
         self.exit = exit
@@ -39,10 +45,10 @@ class AsciiRenderer:
 
     def render(
         self,
-        player_pos: Optional[Tuple[int, int]] = None,
-        visited_trail: Optional[List] = None,
-        path: Optional[List[Tuple[int, int]]] = None,
-        show: bool = True
+        path: Optional[str] = None,
+        # player_pos: Optional[Tuple[int, int]] = None,
+        # visited_trail: Optional[List] = None,
+        # show: bool = True
     ) -> str:
 
         BLOCK = "█"
