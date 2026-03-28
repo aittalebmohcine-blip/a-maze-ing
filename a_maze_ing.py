@@ -35,7 +35,7 @@ def main() -> None:
         SystemExit: If imports fail, file errors occur,
                     or configuration is invalid.
     """
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 2 or sys.argv[1] != "config.txt":
         print("Usage: python3 a_maze_ing.py config.txt")
         return
 
