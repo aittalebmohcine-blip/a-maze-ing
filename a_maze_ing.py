@@ -1,9 +1,3 @@
-# read config
-# generate maze
-# solve maze
-# write output file
-# display maze
-
 import os
 import time
 import sys
@@ -20,7 +14,27 @@ except ImportError as e:
 
 
 def main() -> None:
-    # read config
+    """
+    Main entry point for the A-Maze-ing application.
+
+    This function:
+    1. Reads and validates the configuration file.
+    2. Generates a maze using the provided parameters.
+    3. Solves the maze using BFS.
+    4. Writes the maze and solution to an output file.
+    5. Launches an interactive terminal UI to:
+        - regenerate the maze
+        - show/hide the solution path
+        - change display colors
+        - quit the program
+
+    Usage:
+        python3 a_maze_ing.py config.txt
+
+    Raises:
+        SystemExit: If imports fail, file errors occur,
+                    or configuration is invalid.
+    """
     if len(sys.argv) != 2:
         print("Usage: python3 a_maze_ing.py config.txt")
         return
@@ -28,7 +42,6 @@ def main() -> None:
     config_file = sys.argv[1]
     config = parser.parsing_config_file(config_file)
 
-    # generate maze
     width = config.WIDTH
     height = config.HEIGHT
     start = config.ENTRY
@@ -41,10 +54,8 @@ def main() -> None:
         width, height, start, end, is_perfect, seed)
     maze.generate()
 
-    # solve maze
     path = maze.bfs_solver()
 
-    # write output file
     try:
         file_writer.file_writer(
             maze.grid,
@@ -57,17 +68,11 @@ def main() -> None:
         print(e)
         exit(1)
 
-    # display maze:
-
-    # - Initialize terminal
     os.system('clear')
     term = blessed.Terminal()
 
     renderer = drawer.AsciiRenderer(maze, start, end)
 
-    # print(blessed.Terminal().blue(drawer.AsciiRenderer().render()))
-
-    # print the intro logo
     try:
         with open("bonus/intrro.txt", "r") as file:
             for line in file:
@@ -89,12 +94,23 @@ def main() -> None:
     i = 0
     path = None
     just_pressed = 0
+
     with term.cbreak():
         while True:
+            """
+            Interactive loop handling user input and rendering.
+
+            Controls:
+                1 -> Generate a new maze
+                2 -> Toggle solution path visibility
+                3 -> Change maze color
+                4 -> Exit program
+            """
             if path is None:
                 print(colors[i](renderer.render()))
             else:
                 print(colors[i](renderer.render(path=path)))
+
             print(term.white(
                 "\n=== A-Maze-ing ===\n",
                 "1. Re-generate a new maze\n",
@@ -102,13 +118,17 @@ def main() -> None:
                 "3. Rotate maze colors\n",
                 "4. Quit\n",
                 "Choice? (1-4):"))
+
             key = term.inkey()
+
             if key == "3":
                 i = (i + 1) % len(colors)
+
             elif key == "1":
                 path = None
                 maze.generate()
                 just_pressed = 0
+
             elif key == '2':
                 if not just_pressed:
                     path = maze.bfs_solver()
@@ -116,9 +136,11 @@ def main() -> None:
                 else:
                     path = None
                     just_pressed = 0
+
             elif key == "4":
                 os.system('clear')
                 break
+
             os.system('clear')
 
 

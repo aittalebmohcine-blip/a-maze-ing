@@ -1,12 +1,16 @@
-# parsing_config_file(file) -> Config
-
 from utils.drawing import AsciiRenderer
 from typing import Tuple, Optional, Dict, Any
 from pydantic import BaseModel, Field, ValidationError, model_validator
 
 
 class MazeConfig(BaseModel):
-    # required keys
+    """
+    Configuration model for maze generation.
+
+    This class validates all parameters required to generate a maze,
+    including dimensions, entry/exit points, and output settings.
+    """
+
     WIDTH: int = Field(..., ge=9, le=100)
     HEIGHT: int = Field(..., ge=6, le=100)
     ENTRY: Tuple[int, int] = Field(...)
@@ -14,14 +18,28 @@ class MazeConfig(BaseModel):
     PERFECT: bool = Field(...)
     OUTPUT_FILE: str = Field(...)
 
-    # Optional
     SEED: Optional[int] = None
 
     @model_validator(mode="after")
     def validate_entry_exit(self) -> "MazeConfig":
+        """
+        Validate entry and exit positions.
+
+        Ensures that:
+        - ENTRY and EXIT are inside maze bounds
+        - ENTRY and EXIT are not inside the 42-block area
+        - ENTRY and EXIT are different
+
+        Returns:
+            MazeConfig: The validated configuration instance.
+
+        Raises:
+            ValueError: If any constraint is violated.
+        """
         x, y = self.ENTRY
         w = self.WIDTH
         h = self.HEIGHT
+
         if not 0 <= x < w or not 0 <= y < h:
             raise ValueError("ENTRY point must be inside the maze")
 
@@ -43,6 +61,31 @@ class MazeConfig(BaseModel):
 
 def parsing_config_file(filepath: str) -> MazeConfig:
     config: Dict[Any, Any] = {}
+    """
+    Parse a configuration file and return a validated MazeConfig object.
+
+    The configuration file must follow a key=value format.
+    Supported keys:
+        - WIDTH (int)
+        - HEIGHT (int)
+        - ENTRY (x,y)
+        - EXIT (x,y)
+        - PERFECT (True/False)
+        - OUTPUT_FILE (str)
+        - SEED (int, optional)
+
+    Lines starting with '#' or empty lines are ignored.
+
+    Args:
+        filepath (str): Path to the configuration file.
+
+    Returns:
+        MazeConfig: A validated MazeConfig object if parsing succeeds.
+
+    Raises:
+        SystemExit: If the file cannot be read or validation fails.
+    """
+    config: dict = {}
 
     try:
         with open(filepath, "r") as file:
@@ -60,13 +103,11 @@ def parsing_config_file(filepath: str) -> MazeConfig:
 
                 if key in config:
                     raise ValueError(f"A key must be entred only once ({key})")
+
                 if key in {"WIDTH", "HEIGHT"}:
-                    # config[key] = int(value)
                     config[key] = value
 
                 elif key in {"ENTRY", "EXIT"}:
-                    # x, y = map(int, value.split(","))
-                    # x, y = value.split(",")
                     config[key] = tuple(value.split(","))
 
                 elif key == "PERFECT":
@@ -97,6 +138,7 @@ def parsing_config_file(filepath: str) -> MazeConfig:
         for error in e.errors():
             print(f"{error['msg']}: {error['loc'][0]}")
         exit(1)
+
     except ValueError as e:
         print(f"Configuration error:\n{e}")
         exit(1)
