@@ -40,7 +40,11 @@ def main() -> None:
         return
 
     config_file = sys.argv[1]
-    config = parser.parsing_config_file(config_file)
+    try:
+        config = parser.parsing_config_file(config_file)
+    except Exception as e:
+        print(f"Configuration error:\n{e}")
+        exit(1)
 
     width = config.WIDTH
     height = config.HEIGHT
