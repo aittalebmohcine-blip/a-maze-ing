@@ -1,4 +1,5 @@
 import random
+from random import Random
 from typing import Tuple, List, Generator, Dict, Optional
 
 N = 1 << 0
@@ -82,7 +83,7 @@ class MazeGenerator:
         self.exit = exit
         self.perfect = perfect
 
-        self._rng = random.Random(seed)
+        self._rng: Random = random.Random(seed)
 
         self.grid: list[list[int]] = [
             [0b1111 for _ in range(width)]
@@ -129,14 +130,15 @@ class MazeGenerator:
             visited[y][x] = True
 
         stack: list[tuple[int, int]] = []
-        curent = self.entry
+        curent: tuple[int, int] = self.entry
         x, y = curent
         visited[y][x] = True
         stack.append(curent)
 
         while len(stack):
             curent = stack.pop()
-            neighbors = self._get_unvisited_neighbors(*curent, visited)
+            neighbors: list[tuple[int, int]
+                            ] = self._get_unvisited_neighbors(*curent, visited)
 
             if neighbors:
                 stack.append(curent)
@@ -154,7 +156,7 @@ class MazeGenerator:
 
         This creates multiple possible paths (non-perfect maze).
         """
-        proba = 0.15
+        proba: float = 0.15
 
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
@@ -166,14 +168,15 @@ class MazeGenerator:
             visited[y][x] = True
 
         stack: list[tuple[int, int]] = []
-        curent = self.entry
+        curent: tuple[int, int] = self.entry
         x, y = curent
         visited[y][x] = True
         stack.append(curent)
 
         while len(stack):
             curent = stack.pop()
-            neighbors = self._get_unvisited_neighbors(*curent, visited)
+            neighbors: list[tuple[int, int]
+                            ] = self._get_unvisited_neighbors(*curent, visited)
 
             if neighbors:
                 stack.append(curent)
@@ -200,10 +203,10 @@ class MazeGenerator:
         Returns:
             List[Tuple[int, int]]: Valid coordinates of the pattern.
         """
-        cx = wd // 2
-        cy = ht // 2
+        cx: int = wd // 2
+        cy: int = ht // 2
 
-        cells = [
+        cells: list[tuple[int, int]] = [
             (cx + 2, cy - 2), (cx + 1, cy - 2), (cx + 3, cy - 2),
             (cx + 3, cy - 1), (cx + 3, cy), (cx + 2, cy),
             (cx + 1, cy), (cx + 1, cy + 1), (cx + 1, cy + 2),
@@ -233,8 +236,8 @@ class MazeGenerator:
         Returns:
             list[tuple[int, int]]: List of valid neighbors.
         """
-        width = len(visited[0])
-        height = len(visited)
+        width: int = len(visited[0])
+        height: int = len(visited)
         neighbors: list[tuple[int, int]] = []
 
         if x + 1 < width and not visited[y][x + 1]:
@@ -290,8 +293,8 @@ class MazeGenerator:
         Returns:
             str: Path from entry to exit as a sequence of directions.
         """
-        stack = [self.entry]
-        parent = {}
+        stack: list[tuple[int, int]] = [self.entry]
+        parent: dict[tuple[int, int], tuple[tuple[int, int], str]] = {}
 
         visited: list[list[bool]] = [
             [False for _ in range(self.width)]
@@ -302,7 +305,7 @@ class MazeGenerator:
         visited[y][x] = True
 
         while stack:
-            curent = stack.pop(0)
+            curent: tuple[int, int] = stack.pop(0)
 
             if curent == self.exit:
                 break
@@ -332,13 +335,13 @@ class MazeGenerator:
         Yields:
             Generator[tuple[str, int, int]]: Direction and neighbor coords.
         """
-        w = len(maze[0])
-        h = len(maze)
+        w: int = len(maze[0])
+        h: int = len(maze)
 
         for d, (dx, dy, bit) in DIRS.items():
             if not (maze[y][x] & bit):
-                ny = y + dy
-                nx = x + dx
+                ny: int = y + dy
+                nx: int = x + dx
                 if 0 <= ny < h and 0 <= nx < w:
                     yield d, nx, ny
 
@@ -359,8 +362,8 @@ class MazeGenerator:
         Returns:
             str: Path as sequence of directions.
         """
-        path = []
-        curent = exit
+        path: list[str] = []
+        curent: tuple[int, int] = exit
 
         while curent != entry:
             prev, d = parent[curent]
@@ -376,11 +379,11 @@ class MazeGenerator:
         Args:
             path (str): Path string (sequence of directions).
         """
-        h = len(self.grid)
-        w = len(self.grid[0])
+        h: int = len(self.grid)
+        w: int = len(self.grid[0])
 
         x, y = self.entry
-        path_cells = {(x, y)}
+        path_cells: set[tuple[int, int]] = {(x, y)}
 
         moves = {
             "N": (0, -1),
@@ -398,11 +401,11 @@ class MazeGenerator:
         print("+" + "---+" * w)
 
         for y in range(h):
-            line1 = "|"
-            line2 = "+"
+            line1: str = "|"
+            line2: str = "+"
 
             for x in range(w):
-                cell = self.grid[y][x]
+                cell: int = self.grid[y][x]
 
                 if (x, y) in path_cells:
                     line1 += " . "

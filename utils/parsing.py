@@ -15,7 +15,7 @@ def parse_int(value: str, key: str) -> int:
 
 
 def parse_bool(value: str, key: str) -> bool:
-    v = value.lower()
+    v: str = value.lower()
     if v in {"true", "1"}:
         return True
     if v in {"false", "0"}:
@@ -24,12 +24,12 @@ def parse_bool(value: str, key: str) -> bool:
 
 
 def parse_tuple(value: str, key: str) -> Tuple[int, int]:
-    parts = value.split(",")
+    parts: list[str] = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"{key} must be in format x,y (got '{value}')")
 
-    x = parse_int(parts[0].strip(), key)
-    y = parse_int(parts[1].strip(), key)
+    x: int = parse_int(parts[0].strip(), key)
+    y: int = parse_int(parts[1].strip(), key)
     return (x, y)
 
 
@@ -48,13 +48,17 @@ class MazeConfig(BaseModel):
 
     @model_validator(mode="after")
     def validate_all(self) -> "MazeConfig":
-        w, h = self.WIDTH, self.HEIGHT
+        w: int = self.WIDTH
+        h: int = self.HEIGHT
 
         def in_bounds(p: Tuple[int, int], name: str) -> None:
+            x: int
+            y: int
             x, y = p
             if not (0 <= x < w and 0 <= y < h):
                 raise ValueError(
-                    f"{name} {p} is outside maze bounds ({w}x{h})")
+                    f"{name} {p} is outside maze bounds ({w}x{h})"
+                )
 
         in_bounds(self.ENTRY, "ENTRY")
         in_bounds(self.EXIT, "EXIT")
@@ -62,7 +66,7 @@ class MazeConfig(BaseModel):
         if self.ENTRY == self.EXIT:
             raise ValueError("ENTRY and EXIT must be different")
 
-        blocked = set(AsciiRenderer.cells_of_42(w, h))
+        blocked: set[Tuple[int, int]] = set(AsciiRenderer.cells_of_42(w, h))
 
         if self.ENTRY in blocked:
             raise ValueError(f"ENTRY {self.ENTRY} is inside the 42-block")
@@ -77,12 +81,12 @@ class MazeConfig(BaseModel):
 # Parser
 # -------------------------
 
-ALLOWED_KEYS = {
+ALLOWED_KEYS: set[str] = {
     "WIDTH", "HEIGHT", "ENTRY", "EXIT",
     "PERFECT", "OUTPUT_FILE", "SEED"
 }
 
-REQUIRED_KEYS = {
+REQUIRED_KEYS: set[str] = {
     "WIDTH", "HEIGHT", "ENTRY", "EXIT",
     "PERFECT", "OUTPUT_FILE"
 }
@@ -94,6 +98,8 @@ def parsing_config_file(filepath: str) -> MazeConfig:
 
     try:
         with open(filepath, "r") as f:
+            lineno: int
+            line: str
             for lineno, line in enumerate(f, 1):
                 line = line.strip()
 
@@ -104,6 +110,8 @@ def parsing_config_file(filepath: str) -> MazeConfig:
                     errors.append(f"Line {lineno}: missing '='")
                     continue
 
+                key: str
+                value: str
                 key, value = map(str.strip, line.split("=", 1))
                 key = key.upper()
 
@@ -133,11 +141,11 @@ def parsing_config_file(filepath: str) -> MazeConfig:
                 except ValueError as e:
                     errors.append(f"Line {lineno}: {e}")
 
-        # missing keys
-        missing = REQUIRED_KEYS - raw.keys()
+        missing: set[str] = REQUIRED_KEYS - raw.keys()
         if missing:
             errors.append(
-                f"Missing required keys: {', '.join(sorted(missing))}")
+                f"Missing required keys: {', '.join(sorted(missing))}"
+            )
 
         if errors:
             raise ValueError("\n".join(errors))
@@ -151,8 +159,8 @@ def parsing_config_file(filepath: str) -> MazeConfig:
         raise RuntimeError("Permission denied while reading config file")
 
     except ValidationError as e:
-        msgs = []
+        msgs: List[str] = []
         for err in e.errors():
-            field = ".".join(map(str, err["loc"]))
+            field: str = ".".join(map(str, err["loc"]))
             msgs.append(f"{field}: {err['msg']}")
         raise ValueError("\n".join(msgs))
