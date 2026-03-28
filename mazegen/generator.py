@@ -1,3 +1,59 @@
+"""
+MazeGenerator Module
+====================
+
+This module provides a `MazeGenerator` class to generate and solve mazes.
+
+Basic usage
+-----------
+
+>>> from mazegen import MazeGenerator
+>>> gen = MazeGenerator(
+...     width=20,
+...     height=15,
+...     entry=(0, 0),
+...     exit=(19, 14)
+... )
+>>> gen.generate()
+
+Custom parameters
+-----------------
+
+You can customize the generator:
+
+>>> gen = MazeGenerator(
+...     width=20,
+...     height=15,
+...     entry=(0, 0),
+...     exit=(19, 14),
+...     seed=42,
+...     perfect=True
+... )
+>>> gen.generate()
+
+Accessing results
+-----------------
+
+After generation, you can access:
+
+- The maze structure (grid of bitwise walls)
+- The entry and exit points
+- The shortest solution path
+
+>>> maze = gen.grid
+>>> path = gen.bfs_solver()
+>>> start = gen.entry
+>>> end = gen.exit
+
+Notes
+-----
+
+- You must call `generate()` before solving or accessing the maze.
+- The maze is stored as a 2D list of integers using bitwise wall encoding:
+  N=1, E=2, S=4, W=8.
+- `bfs_solver()` returns a path string using directions: 'N', 'E', 'S', 'W'.
+"""
+
 import random
 from random import Random
 from typing import Tuple, List, Generator, Dict, Optional
