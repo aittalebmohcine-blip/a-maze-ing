@@ -1,11 +1,10 @@
-
-from typing import Tuple, Optional, List
+from typing import Tuple, Optional, List, Dict
 from mazegen.generator import MazeGenerator
 
-N = 1
-E = 2
-S = 4
-W = 8
+N: int = 1
+E: int = 2
+S: int = 4
+W: int = 8
 
 
 class AsciiRenderer:
@@ -51,10 +50,10 @@ class AsciiRenderer:
         Returns:
             List[Tuple[int, int]]: Valid coordinates of the pattern.
         """
-        cx = wd // 2
-        cy = ht // 2
+        cx: int = wd // 2
+        cy: int = ht // 2
 
-        cells = [
+        cells: List[Tuple[int, int]] = [
             (cx + 2, cy - 2), (cx + 1, cy - 2), (cx + 3, cy - 2),
             (cx + 3, cy - 1), (cx + 3, cy), (cx + 2, cy),
             (cx + 1, cy), (cx + 1, cy + 1), (cx + 1, cy + 2),
@@ -90,16 +89,16 @@ class AsciiRenderer:
         Returns:
             str: The rendered ASCII maze.
         """
-        BLOCK = "█"
-        width = self.maze.width
-        height = self.maze.height
-        grid = self.maze.grid
-        h_seg = BLOCK * 3
+        BLOCK: str = "█"
+        width: int = self.maze.width
+        height: int = self.maze.height
+        grid: list[list[int]] = self.maze.grid
+        h_seg: str = BLOCK * 3
 
         x, y = self.entry
-        path_cells = {(x, y)}
+        path_cells: set[tuple[int, int]] = {(x, y)}
 
-        moves = {
+        moves: Dict[str, tuple[int, int]] = {
             "N": (0, -1),
             "E": (1, 0),
             "S": (0, 1),
@@ -113,25 +112,26 @@ class AsciiRenderer:
                 y += dy
                 path_cells.add((x, y))
 
-        output = ""
+        output: str = ""
 
         output += BLOCK + (h_seg + BLOCK) * (width - 1) + h_seg + BLOCK + "\n"
 
-        cell42 = set(self.cells_of_42(width, height))
+        cell42: set[Tuple[int, int]] = set(
+            self.cells_of_42(width, height))
 
         for y in range(height):
 
-            row_str = BLOCK
+            row_str: str = BLOCK
 
             for x in range(width):
 
-                cell = grid[y][x]
+                cell: int = grid[y][x]
 
                 if (x, y) in cell42:
                     cell |= N | E | S | W
 
                 if (x, y) == self.entry:
-                    body = " 🐹"
+                    body: str = " 🐹"
                 elif (x, y) == self.exit:
                     body = " 🚪"
                 elif (x, y) in cell42:
@@ -141,7 +141,8 @@ class AsciiRenderer:
                 else:
                     body = "   "
 
-                wall_char = BLOCK if (cell & E) != 0 or x == width - 1 else " "
+                wall_char: str = BLOCK if (
+                    cell & E) != 0 or x == width - 1 else " "
                 row_str += body + wall_char
 
             output += row_str + "\n"
@@ -155,7 +156,7 @@ class AsciiRenderer:
                     if (x, y) in cell42:
                         cell |= N | E | S | W
 
-                    wall = h_seg if (cell & S) != 0 else "   "
+                    wall: str = h_seg if (cell & S) != 0 else "   "
                     row_str += wall + BLOCK
 
                 output += row_str + "\n"
