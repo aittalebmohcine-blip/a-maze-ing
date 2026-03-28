@@ -5,6 +5,7 @@ import sys
 try:
     import blessed
     import utils.parsing as parser
+    from utils.parsing import MazeConfig
     from mazegen import generator
     from utils import file_writer
     import utils.drawing as drawer
@@ -39,26 +40,26 @@ def main() -> None:
         print("Usage: python3 a_maze_ing.py config.txt")
         return
 
-    config_file = sys.argv[1]
+    config_file: str = sys.argv[1]
     try:
-        config = parser.parsing_config_file(config_file)
+        config: MazeConfig = parser.parsing_config_file(config_file)
     except Exception as e:
         print(f"Configuration error:\n{e}")
         exit(1)
 
-    width = config.WIDTH
-    height = config.HEIGHT
-    start = config.ENTRY
-    end = config.EXIT
-    is_perfect = config.PERFECT
-    seed = config.SEED
-    output_file = config.OUTPUT_FILE
+    width: int = config.WIDTH
+    height: int = config.HEIGHT
+    start: tuple[int, int] = config.ENTRY
+    end: tuple[int, int] = config.EXIT
+    is_perfect: bool = config.PERFECT
+    seed: int | None = config.SEED
+    output_file: str = config.OUTPUT_FILE
 
     maze = generator.MazeGenerator(
         width, height, start, end, is_perfect, seed)
     maze.generate()
 
-    path = maze.bfs_solver()
+    path: str | None = maze.bfs_solver()
 
     try:
         file_writer.file_writer(
@@ -73,9 +74,9 @@ def main() -> None:
         exit(1)
 
     os.system('clear')
-    term = blessed.Terminal()
+    term: blessed.Terminal = blessed.Terminal()
 
-    renderer = drawer.AsciiRenderer(maze, start, end)
+    renderer: drawer.AsciiRenderer = drawer.AsciiRenderer(maze, start, end)
 
     try:
         with open("bonus/intrro.txt", "r") as file:
@@ -95,9 +96,9 @@ def main() -> None:
         term.brown,
     ]
 
-    i = 0
+    i: int = 0
     path = None
-    just_pressed = 0
+    just_pressed: bool = False
 
     with term.cbreak():
         while True:
@@ -131,15 +132,15 @@ def main() -> None:
             elif key == "1":
                 path = None
                 maze.generate()
-                just_pressed = 0
+                just_pressed = False
 
             elif key == '2':
                 if not just_pressed:
                     path = maze.bfs_solver()
-                    just_pressed = 1
+                    just_pressed = True
                 else:
                     path = None
-                    just_pressed = 0
+                    just_pressed = False
 
             elif key == "4":
                 os.system('clear')
