@@ -87,7 +87,7 @@ class MazeGenerator:
         entry: Tuple[int, int],
         exit: Tuple[int, int],
         perfect: bool = True,
-        seed: int | None = None,
+        seed: Optional[int] = None,
     ):
         """
         Initialize the maze generator.

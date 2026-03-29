@@ -12,6 +12,7 @@ Usage:
 import os
 import time
 import sys
+from typing import Optional, List, Tuple, Callable
 
 try:
     import blessed
@@ -60,17 +61,17 @@ def main() -> None:
 
     width: int = config.WIDTH
     height: int = config.HEIGHT
-    start: tuple[int, int] = config.ENTRY
-    end: tuple[int, int] = config.EXIT
+    start: Tuple[int, int] = config.ENTRY
+    end: Tuple[int, int] = config.EXIT
     is_perfect: bool = config.PERFECT
-    seed: int | None = config.SEED
+    seed: Optional[int] = config.SEED
     output_file: str = config.OUTPUT_FILE
 
-    maze = generator.MazeGenerator(
+    maze: generator.MazeGenerator = generator.MazeGenerator(
         width, height, start, end, is_perfect, seed)
     maze.generate()
 
-    path: str | None = maze.bfs_solver()
+    path: Optional[str] = maze.bfs_solver()
 
     try:
         file_writer.file_writer(
@@ -99,7 +100,7 @@ def main() -> None:
         print(f"File error: {e}")
         exit(1)
 
-    colors = [
+    colors: List[Callable[..., str]] = [
         term.blue,
         term.red,
         term.white,
