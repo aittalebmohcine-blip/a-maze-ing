@@ -1,6 +1,18 @@
+"""A-Maze-ing runner module.
+
+This module implements the CLI entry point for the maze application. It reads
+a configuration file, initializes a maze generator, solves the generated maze,
+writes output to disk, and starts an interactive terminal session for
+regenerating mazes, toggling solution display, and cycling theme colors.
+
+Usage:
+    python3 a_maze_ing.py config.txt
+"""
+
 import os
 import time
 import sys
+from typing import Optional, List, Tuple, Callable
 
 try:
     import blessed
@@ -49,17 +61,17 @@ def main() -> None:
 
     width: int = config.WIDTH
     height: int = config.HEIGHT
-    start: tuple[int, int] = config.ENTRY
-    end: tuple[int, int] = config.EXIT
+    start: Tuple[int, int] = config.ENTRY
+    end: Tuple[int, int] = config.EXIT
     is_perfect: bool = config.PERFECT
-    seed: int | None = config.SEED
+    seed: Optional[int] = config.SEED
     output_file: str = config.OUTPUT_FILE
 
-    maze = generator.MazeGenerator(
+    maze: generator.MazeGenerator = generator.MazeGenerator(
         width, height, start, end, is_perfect, seed)
     maze.generate()
 
-    path: str | None = maze.bfs_solver()
+    path: Optional[str] = maze.bfs_solver()
 
     try:
         file_writer.file_writer(
@@ -88,7 +100,7 @@ def main() -> None:
         print(f"File error: {e}")
         exit(1)
 
-    colors = [
+    colors: List[Callable[..., str]] = [
         term.blue,
         term.red,
         term.white,
