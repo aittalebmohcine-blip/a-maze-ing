@@ -1,95 +1,128 @@
-*This project has been created as part of the 42 curriculum by mait-tal, maeev-d.*
+*This project has been created as part of the 42 curriculum by mait-tal.*
 
-# Description
+## Description
 
-A-Maze-ing is a Python command-line maze generator and solver. The goal is to provide a reliable, reproducible maze tool that produces a solvable grid and outputs an ASCII map with a discovered shortest path. It supports configurable width/height, entry/exit points, optional perfect/non-perfect mazes, and deterministic results via seed control.
+A-Maze-ing is a Python-based maze generation and solving application. It generates mazes using an iterative depth-first search algorithm, allows solving them with breadth-first search, and provides an interactive ASCII terminal interface for visualization and regeneration. The project includes a "42" pattern carved into the maze center as a thematic element.
 
-# Instructions
+The goal of this project is to create a functional maze generator that demonstrates algorithmic concepts in a practical, interactive way, while adhering to clean code principles and modularity.
 
-1. Install dependencies
-   - `make install` (reads `requirements.txt`)
-2. Run program
-   - `make run` (equivalent to `python3 a_maze_ing.py config.txt`)
-3. Optional commands
-   - `make debug` (extra logging / verbose checks)
-   - `make lint` (static checks)
-   - `make clean` (remove generated files and caches)
+## Instructions
 
-# Config file structure
+### Installation
 
-`config.txt` must include:
+1. Ensure Python 3.10 or higher is installed.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   Or use the Makefile:
+   ```bash
+   make install
+   ```
 
-- `WIDTH` (int 9-100)
-- `HEIGHT` (int 6-100)
-- `ENTRY` (x,y inside bounds)
-- `EXIT` (x,y inside bounds, not equal to ENTRY)
-- `OUTPUT_FILE` (path)
-- `PERFECT` (`true`/`false`)
-- `SEED` (optional integer)
+### Execution
 
-Example:
+Run the application with:
+```bash
+python3 a_maze_ing.py config.txt
+```
+Or:
+```bash
+make run
+```
+
+This will generate a maze based on the configuration, solve it, write the output to a file, and launch an interactive terminal UI.
+
+### Interactive Controls
+
+- **1**: Regenerate a new maze
+- **2**: Toggle solution path visibility
+- **3**: Cycle through color themes
+- **4**: Exit the program
+
+## Resources
+
+### References
+
+- [Maze Generation Algorithms](https://en.wikipedia.org/wiki/Maze_generation_algorithm) - Overview of common maze generation techniques.
+- [Breadth-First Search](https://en.wikipedia.org/wiki/Breadth-first_search) - Algorithm used for solving the maze.
+- [Pydantic Documentation](https://pydantic-docs.helpmanual.io/) - For configuration validation.
+- [Blessed Library](https://blessed.readthedocs.io/en/latest/) - For terminal UI interactions.
+
+### AI Usage
+
+AI was used for:
+- Code structure suggestions and best practices.
+- Debugging assistance and error handling improvements.
+- Documentation generation and README drafting.
+- Ensuring code modularity and reusability.
+
+## Config File Structure and Format
+
+The configuration file (`config.txt`) uses a simple key-value format with one parameter per line. Lines starting with `#` are comments and are ignored. Blank lines are allowed.
+
+### Required Parameters
+
+- `WIDTH`: Integer, maze width in cells (9-100).
+- `HEIGHT`: Integer, maze height in cells (6-100).
+- `ENTRY`: Tuple as `x,y`, starting point coordinates.
+- `EXIT`: Tuple as `x,y`, ending point coordinates.
+- `PERFECT`: Boolean (`true`/`false`), whether the maze has no loops.
+- `OUTPUT_FILE`: String, path to the output file for maze data.
+
+### Optional Parameters
+
+- `SEED`: Integer, random seed for reproducible maze generation (-1 for random).
+
+### Example Config
 
 ```
-WIDTH=30
-HEIGHT=20
+WIDTH=15
+HEIGHT=10
 ENTRY=0,0
-EXIT=29,19
-OUTPUT_FILE=out/maze.txt
-PERFECT=true
-SEED=42
+EXIT=9,9
+OUTPUT_FILE=output.txt
+PERFECT=false
+SEED=-1
 ```
 
-# Maze generation algorithm
+## Maze Generation Algorithm
 
-- Generation: iterative Depth First Search using an explicit stack and cell visitation; carve passages and backtrack using the stack when dead ends are reached.
-- Solver: Breadth First Search (BFS) for shortest path discovery in the generated grid.
+The maze is generated using an iterative depth-first search (DFS) algorithm implemented with a stack. This ensures a perfect maze (no loops) when `PERFECT=true`, with all cells connected and no cycles. For imperfect mazes, additional walls are randomly removed to introduce loops.
 
-# Why this algorithm
+### Why This Algorithm?
 
-- Iterative DFS with stack avoids recursion while giving a complete traversal and perfect maze behavior when `PERFECT=true`.
-- BFS gives guaranteed shortest path in grid graph.
-- This approach is simple, robust, and fits the 42 project requirement for clear pathfinding behavior.
+Iterative DFS was chosen for its simplicity and efficiency in creating spanning tree mazes. It produces aesthetically pleasing, complex mazes with a single solution path in perfect mode. The iterative approach avoids recursion depth limits and is easy to implement and understand.
 
-# Reusable code
+## Reusable Code Parts
 
-- `mazegen/generator.py`: maze grid representation, generator and solver routines. Can be reused as `from mazegen.generator import MazeGenerator`.
-- `utils/parsing.py`: config parser + validator, supports reuse in other CLI tools.
-- `utils/drawing.py`: ASCII map render + path overlay for text output.
-- `utils/file_writer.py`: framing output to files.
+The codebase is designed with modularity in mind:
 
-# Team and project management
+- **`MazeGenerator` class** (`mazegen/generator.py`): Core maze generation and solving logic. Can be reused in other projects for maze-related functionality.
+- **Configuration parsing** (`utils/parsing.py`): Uses Pydantic for robust validation. Reusable for any config file parsing needs.
+- **ASCII rendering** (`utils/drawing.py`): Converts maze data to visual representation. Easily adaptable for different output formats.
+- **File I/O** (`utils/file_writer.py`): Handles maze data export. Reusable for structured data writing.
 
-- Roles:
-  - `mait-tal`: project lead, core implementation, module structure.
-  - `maeev-d`: validation, code review, documentation.
+## Team and Project Management
 
-- Planning evolution:
-  1. Start with config parser and validation in `utils/parsing.py`.
-  2. Build generator and solver in `mazegen/generator.py`.
-  3. Add CLI and output module support (`a_maze_ing.py`, `utils/file_writer.py`).
-  4. Add optional config options and robust style checks (make targets).
+### Team Members
 
-- What worked:
-  - Modular architecture split by responsibility.
-  - Clear algorithm design with deterministic seeding.
+- **mait-tal**: Sole developer, responsible for all aspects including design, implementation, testing, and documentation.
 
-- What could be improved:
-  - Add automated tests (`unittest`/`pytest`) and CI.
-  - Increase interactive user feedback and dynamic visual mode.
+### Planning and Evolution
 
-- Tools used:
-  - Python 3, Make, Git, `pydantic` (input validation), `flake8`/`black` for linting.
-  - Optional: `blessed` for terminal enhancements (if added later).
+Initial planning focused on core requirements: maze generation, solving, and basic output. The project evolved to include interactive UI, configuration validation, and bonus features like the "42" pattern and color themes.
 
-# Advanced features
+What worked well: Modular design allowed easy addition of features. Iterative development with testing at each step ensured stability.
 
-- `PERFECT=false` supports mazes with loops (non-perfect) by not strictly forcing one-way connections.
-- `SEED` enables deterministic maze repeatability.
+What could be improved: More extensive testing coverage and user input validation in the interactive mode.
 
-# Resources
+### Tools Used
 
-- Python docs: https://docs.python.org/3/
-- DFS maze generation: https://en.wikipedia.org/wiki/Maze_generation_algorithm
-- BFS shortest path: https://en.wikipedia.org/wiki/Breadth-first_search
-- AI usage: ChatGPT (Raptor mini) assisted in README editing, content clarity, and project requirement alignment.
-
+- **Python 3.10+**: Core language.
+- **Pydantic**: Configuration validation.
+- **Blessed**: Terminal interactions.
+- **Flake8 & MyPy**: Code linting and type checking.
+- **Makefile**: Build automation.
+- **Git**: Version control.</content>
+<parameter name="filePath">/home/mait-tal/Documents/a-maze-ing/README.md
