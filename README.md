@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by mait-tal.*
+*This project has been created as part of the 42 curriculum by mait-tal, maeev-d.*
 
 ## Description
 
@@ -107,7 +107,8 @@ The codebase is designed with modularity in mind:
 
 ### Team Members
 
-- **mait-tal**: Sole developer, responsible for all aspects including design, implementation, testing, and documentation.
+- **mait-tal**: Algorithm and parsing implementation.
+- **maeev-d**: Visualisation, user interface, and parsing contributions.
 
 ### Planning and Evolution
 
