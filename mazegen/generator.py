@@ -1,3 +1,59 @@
+"""
+MazeGenerator Module
+====================
+
+This module provides a `MazeGenerator` class to generate and solve mazes.
+
+Basic usage
+-----------
+
+>>> from mazegen import MazeGenerator
+>>> gen = MazeGenerator(
+...     width=20,
+...     height=15,
+...     entry=(0, 0),
+...     exit=(19, 14)
+... )
+>>> gen.generate()
+
+Custom parameters
+-----------------
+
+You can customize the generator:
+
+>>> gen = MazeGenerator(
+...     width=20,
+...     height=15,
+...     entry=(0, 0),
+...     exit=(19, 14),
+...     seed=42,
+...     perfect=True
+... )
+>>> gen.generate()
+
+Accessing results
+-----------------
+
+After generation, you can access:
+
+- The maze structure (grid of bitwise walls)
+- The entry and exit points
+- The shortest solution path
+
+>>> maze = gen.grid
+>>> path = gen.bfs_solver()
+>>> start = gen.entry
+>>> end = gen.exit
+
+Notes
+-----
+
+- You must call `generate()` before solving or accessing the maze.
+- The maze is stored as a 2D list of integers using bitwise wall encoding:
+  N=1, E=2, S=4, W=8.
+- `bfs_solver()` returns a path string using directions: 'N', 'E', 'S', 'W'.
+"""
+
 import random
 from random import Random
 from typing import Tuple, List, Generator, Dict, Optional
@@ -371,56 +427,3 @@ class MazeGenerator:
             curent = prev
 
         return "".join((reversed(path)))
-
-    def draw_maze_with_path(self, path: str) -> None:
-        """
-        Draw the maze in ASCII format with the solution path.
-
-        Args:
-            path (str): Path string (sequence of directions).
-        """
-        h: int = len(self.grid)
-        w: int = len(self.grid[0])
-
-        x, y = self.entry
-        path_cells: set[tuple[int, int]] = {(x, y)}
-
-        moves = {
-            "N": (0, -1),
-            "E": (1, 0),
-            "S": (0, 1),
-            "W": (-1, 0),
-        }
-
-        for step in path:
-            dx, dy = moves[step]
-            x += dx
-            y += dy
-            path_cells.add((x, y))
-
-        print("+" + "---+" * w)
-
-        for y in range(h):
-            line1: str = "|"
-            line2: str = "+"
-
-            for x in range(w):
-                cell: int = self.grid[y][x]
-
-                if (x, y) in path_cells:
-                    line1 += " . "
-                else:
-                    line1 += "   "
-
-                if cell & 2:
-                    line1 += "|"
-                else:
-                    line1 += " "
-
-                if cell & 4:
-                    line2 += "---+"
-                else:
-                    line2 += "   +"
-
-            print(line1)
-            print(line2)
