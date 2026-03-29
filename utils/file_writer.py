@@ -22,7 +22,8 @@ def file_writer(
         maze (List[List[int]]): 2D maze grid where each cell is a bitmask.
         start (Tuple[int, int]): Entry point (x, y).
         end (Tuple[int, int]): Exit point (x, y).
-        path (Optional[str]): Path from entry to exit as a sequence of directions (may be None).
+        path (Optional[str]): Path from entry to exit as a sequence of
+        directions (may be None).
         output_file_path (str): Path to the output file.
 
     Raises:
