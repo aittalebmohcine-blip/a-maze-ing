@@ -1,4 +1,4 @@
-*This project has been created as part of the 42 curriculum by mait-tal, maeev-d.*
+*This project has been created as part of the 42 curriculum by mait-tal, dez-zahe.*
 
 ## Description
 
@@ -107,8 +107,19 @@ The codebase is designed with modularity in mind:
 
 ### Team Members
 
-- **mait-tal**: Algorithm and parsing implementation.
-- **maeev-d**: Visualisation, user interface, and parsing contributions.
+### 🧑‍💻 dez-zahe
+
+* Implemented **parsing system** (config file handling & validation)
+* Developed **ASCII rendering** (maze drawing logic)
+* Worked on **bonus features** (enhancements and visual improvements)
+
+### 🧑‍💻 mait-tal
+
+* Implemented core **maze generation algorithms**:
+
+  * Depth-First Search (DFS)
+  * Breadth-First Search (BFS)
+* Developed the **MazeGenerator** logic (grid creation and structure)
 
 ### Planning and Evolution
 
