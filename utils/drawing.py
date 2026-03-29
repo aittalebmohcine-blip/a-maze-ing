@@ -73,21 +73,17 @@ class AsciiRenderer:
         # visited_trail: Optional[List] = None,
         # show: bool = True
     ) -> str:
-        """
-        Render the maze as an ASCII string.
+        """Return an ASCII representation of the maze.
 
-        Supports optional overlays such as player position,
-        visited cells, and solution path.
+        Optional path overlay highlights the solution route from entry
+        to exit.
 
         Args:
-            player_pos (Optional[Tuple[int, int]]): Current player position.
-            visited_trail (Optional[List]): List of visited cells.
-            path (Optional[List[Tuple[int, int]]]):
-                Path as sequence of directions.
-            show (bool): If True, intended for display (not used internally).
+            path: Optional direction sequence composed of 'N', 'E', 'S', 'W'.
 
         Returns:
-            str: The rendered ASCII maze.
+            str: Multiline ASCII maze string including borders, entry/exit
+            and optional solution path markers.
         """
         BLOCK: str = "█"
         width: int = self.maze.width

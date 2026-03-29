@@ -8,6 +8,18 @@ from utils.drawing import AsciiRenderer
 # -------------------------
 
 def parse_int(value: str, key: str) -> int:
+    """Convert a value to int with context-aware error message.
+
+    Args:
+        value: String to parse.
+        key: Parameter name used in error text.
+
+    Returns:
+        int: Parsed integer.
+
+    Raises:
+        ValueError: If value is not a valid integer.
+    """
     try:
         return int(value)
     except ValueError:
@@ -15,6 +27,18 @@ def parse_int(value: str, key: str) -> int:
 
 
 def parse_bool(value: str, key: str) -> bool:
+    """Convert a string to boolean using flexible accepted literals.
+
+    Args:
+        value: String to parse ('true', 'false', '1', '0').
+        key: Parameter name used in error text.
+
+    Returns:
+        bool: Parsed boolean.
+
+    Raises:
+        ValueError: If value is not a valid boolean.
+    """
     v: str = value.lower()
     if v in {"true", "1"}:
         return True
@@ -24,6 +48,18 @@ def parse_bool(value: str, key: str) -> bool:
 
 
 def parse_tuple(value: str, key: str) -> Tuple[int, int]:
+    """Parse a coordinate tuple from a comma-separated string.
+
+    Args:
+        value: String like 'x,y'.
+        key: Parameter name used in error text.
+
+    Returns:
+        Tuple[int, int]: Coordinates parsed from the string.
+
+    Raises:
+        ValueError: If format is incorrect or values are non-integer.
+    """
     parts: list[str] = value.split(",")
     if len(parts) != 2:
         raise ValueError(f"{key} must be in format x,y (got '{value}')")
@@ -38,6 +74,17 @@ def parse_tuple(value: str, key: str) -> Tuple[int, int]:
 # -------------------------
 
 class MazeConfig(BaseModel):
+    """Pydantic model for maze configuration from file input.
+
+    Attributes:
+        WIDTH: Maze width in cells (9 to 100).
+        HEIGHT: Maze height in cells (6 to 100).
+        ENTRY: Starting coordinate (x, y).
+        EXIT: Target coordinate (x, y).
+        PERFECT: Whether maze should be perfect (no loops).
+        OUTPUT_FILE: Destination output path for maze data.
+        SEED: Optional random seed for reproducible generation.
+    """
     WIDTH: int = Field(..., ge=9, le=100)
     HEIGHT: int = Field(..., ge=6, le=100)
     ENTRY: Tuple[int, int]
@@ -93,6 +140,22 @@ REQUIRED_KEYS: set[str] = {
 
 
 def parsing_config_file(filepath: str) -> MazeConfig:
+    """Read and validate maze configuration from a file.
+
+    The expected file format is `KEY=VALUE` lines. Comments and blank lines
+    are ignored. Required keys are WIDTH, HEIGHT, ENTRY, EXIT, PERFECT, and
+    OUTPUT_FILE. SEED is optional.
+
+    Args:
+        filepath: Path to the configuration file.
+
+    Returns:
+        MazeConfig: Validated configuration object.
+
+    Raises:
+        RuntimeError: File not found or permission denied.
+        ValueError: Parse errors or missing/invalid fields.
+    """
     raw: Dict[str, Any] = {}
     errors: List[str] = []
 

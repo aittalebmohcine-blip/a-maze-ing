@@ -1,3 +1,14 @@
+"""A-Maze-ing runner module.
+
+This module implements the CLI entry point for the maze application. It reads
+a configuration file, initializes a maze generator, solves the generated maze,
+writes output to disk, and starts an interactive terminal session for
+regenerating mazes, toggling solution display, and cycling theme colors.
+
+Usage:
+    python3 a_maze_ing.py config.txt
+"""
+
 import os
 import time
 import sys
